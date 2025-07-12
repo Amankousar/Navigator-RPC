@@ -39,6 +39,17 @@ rpc.register({
 });
 
 rpc.register({
+  name: 'getUsersPermissions',
+  arguments: {
+    user_id: { type: 'number', required: true },
+  },
+  implementation: async ({ user_id }) => {
+    const response = await axios.get(`${BASE_URL}/permissions/${user_id}`);
+    return response.data;
+  }
+});
+
+rpc.register({
   name: 'grantAccess',
   arguments: {
     user_id: { type: 'number', required: true },
@@ -56,6 +67,33 @@ rpc.register({
   },
   implementation: async ({ user_id, app_id }) =>
     (await axios.delete(`${BASE_URL}/permissions`, { data: { user_id, app_id } })).data,
+});
+
+rpc.register({
+  name: "replicateAccess",
+  arguments: {
+    source_user_id:  { type: "number", required: true },
+    target_user_id:  { type: "number", required: true },
+  },
+  implementation: async ({ source_user_id, target_user_id }) => {
+    const userApps = (await axios.get(
+      `${BASE_URL}/permissions/${source_user_id}`
+    )).data;
+
+    for (const app of userApps) {
+      try {
+        await axios.post(`${BASE_URL}/permissions`, {
+          user_id: target_user_id,
+          app_id: app.id,
+        });
+      } catch (e) {
+        if (!e.response || e.response.status !== 409) {
+          throw e;
+        }
+      }
+    }
+    return { success: true };
+  },
 });
 
 rpc.listen();

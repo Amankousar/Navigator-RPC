@@ -96,4 +96,16 @@ rpc.register({
   },
 });
 
+rpc.register({
+  name: 'getCurrentUserFromDB',
+  arguments: {
+    email: { type: 'string', required: true },
+  },
+  implementation: async ({ email }) => {
+    const allUsers = await axios.get(`${BASE_URL}/users`);
+    return allUsers.data.find(user => user.email === email);
+  },
+});
+
+
 rpc.listen();

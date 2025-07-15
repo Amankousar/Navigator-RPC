@@ -107,5 +107,17 @@ rpc.register({
   },
 });
 
-
 rpc.listen();
+
+import express from 'express';
+
+const app = express();
+const PORT = process.env.PORT || 4000;
+
+app.get('/', (_, res) => {
+  res.send('Navigator RPC is running.');
+});
+
+app.listen(PORT, () => {
+  console.log(`Dummy Express server running on port ${PORT}`);
+});

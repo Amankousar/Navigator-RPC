@@ -11,7 +11,7 @@ const rpc = new RetoolRPC({
   logLevel: 'info',
 });
 
-const BASE_URL = 'http://localhost:3000'; 
+const BASE_URL = 'https://navigatorapp-backend.onrender.com'; 
 
 rpc.register({
   name: 'getAllUsers',

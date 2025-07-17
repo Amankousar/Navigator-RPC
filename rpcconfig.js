@@ -53,7 +53,7 @@ rpc.register({
   name: 'grantAccess',
   arguments: {
     user_id: { type: 'number', required: true },
-    app_id: { type: 'array', required: true },
+    app_id: { type: 'json', required: true },
   },
   implementation: async ({ user_id, app_id }) =>
     (await axios.post(`${BASE_URL}/permissions`, { user_id, app_id })).data,
@@ -63,7 +63,7 @@ rpc.register({
   name: 'revokeAccess',
   arguments: {
     user_id: { type: 'number', required: true },
-    app_id: { type: 'array', required: true },
+    app_id: { type: 'json', required: true },
   },
   implementation: async ({ user_id, app_id }) =>
     (await axios.delete(`${BASE_URL}/permissions`, { data: { user_id, app_id } })).data,

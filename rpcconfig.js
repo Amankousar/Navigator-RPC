@@ -73,7 +73,7 @@ rpc.register({
   name: "replicateAccess",
   arguments: {
     source_user_id:  { type: "number", required: true },
-    target_user_id:  { type: "array", required: true },
+    target_user_id:  { type: "json", required: true },
   },
   implementation: async ({ source_user_id, target_user_id }) => {
     const userApps = (await axios.get(
